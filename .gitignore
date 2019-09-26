@@ -3,6 +3,9 @@
 [Oo]bj/
 [Bb]uild/
 [Bb]uilds/
+SwitchIL2CPPCache/
+SwitchIL2CPPStats/
+NintendoSDKPlugin/
 Assets/AssetStoreTools*
 
 # Visual Studio cache directory
