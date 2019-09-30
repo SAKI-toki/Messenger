@@ -1,17 +1,15 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 /// <summary>
 /// プレイヤーの制御クラス
 /// </summary>
+[RequireComponent(typeof(ExamineController))]
 public class PlayerController : MonoBehaviour
 {
     [SerializeField, Header("移動速度")]
     float moveSpeed = 1.0f;
     [SerializeField, Header("回転速度")]
     float rotateSpeed = 1.0f;
-
     void Start()
     {
         //地面に落としておく
@@ -42,4 +40,5 @@ public class PlayerController : MonoBehaviour
         float rotateStick = SwitchInput.GetHorizontal(0);
         transform.Rotate(0, rotateStick * rotateSpeed * Time.deltaTime, 0);
     }
+
 }

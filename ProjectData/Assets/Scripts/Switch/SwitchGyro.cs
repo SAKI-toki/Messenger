@@ -41,8 +41,6 @@ static public class SwitchGyro
     static Quaternion GetGyroImpl(int index)
     {
 #if UNITY_SWITCH && !(UNITY_EDITOR)
-        //未接続ならQuaternion.identity
-        if (!SwitchManager.GetInstance().IsConnect(index)) return Quaternion.identity;
         //IDの取得
         NpadId npadId = SwitchManager.GetInstance().GetNpadId(index);
         //スタイルの取得
@@ -68,6 +66,8 @@ static public class SwitchGyro
     /// <returns>ジャイロの回転</returns>
     static public Quaternion GetGyro(int index)
     {
+        //未接続ならQuaternion.identity
+        if (!SwitchManager.GetInstance().IsConnect(index)) return Quaternion.identity;
         //キーがない場合は追加しておく
         if (!baseGyro.ContainsKey(index)) baseGyro.Add(index, Quaternion.identity);
 #if UNITY_SWITCH && !(UNITY_EDITOR)
