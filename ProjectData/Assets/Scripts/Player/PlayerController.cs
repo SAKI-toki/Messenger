@@ -8,10 +8,10 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField, Header("移動速度")]
     float moveSpeed = 1.0f;
-    [SerializeField, Header("回転速度")]
-    float rotateSpeed = 1.0f;
+    new Rigidbody rigidbody = null;
     void Start()
     {
+        rigidbody = GetComponent<Rigidbody>();
         //地面に落としておく
         Physics.autoSimulation = false;
         Physics.Simulate(10.0f);
@@ -21,7 +21,6 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         Move();
-        Rotation();
     }
 
     /// <summary>
@@ -29,16 +28,10 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     void Move()
     {
-        float moveStick = SwitchInput.GetVertical(0);
-        transform.Translate(Vector3.forward * moveStick * moveSpeed * Time.deltaTime);
-    }
-    /// <summary>
-    /// 回転処理
-    /// </summary>
-    void Rotation()
-    {
-        float rotateStick = SwitchInput.GetHorizontal(0);
-        transform.Rotate(0, rotateStick * rotateSpeed * Time.deltaTime, 0);
+        float vertical = SwitchInput.GetVertical(0);
+        float horizontal = SwitchInput.GetHorizontal(0);
+        rigidbody.MovePosition(transform.position +
+        (transform.forward * vertical + transform.right * horizontal) * moveSpeed * Time.deltaTime);
     }
 
 }

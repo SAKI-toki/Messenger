@@ -38,6 +38,10 @@ public class ExamineController : MonoBehaviour
                 currentHitExamine.HitInitialize();
             }
         }
+        if (SwitchInput.GetButtonDown(0, SwitchButton.Examine))
+        {
+            currentHitExamine.MainProcess();
+        }
         rayHitExamine = currentHitExamine;
     }
 

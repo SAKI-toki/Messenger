@@ -5,18 +5,17 @@ using UnityEngine;
 public class OpenExamine : ExamineBase
 {
     [SerializeField]
-    Material HitColor = null;
-    Material defaultColor = null;
-    MeshRenderer meshRenderer = null;
+    GameObject mainProcessObject = null;
+    Outline outline = null;
     void Start()
     {
-        meshRenderer = GetComponent<MeshRenderer>();
-        defaultColor = meshRenderer.material;
+        outline = GetComponent<Outline>();
     }
+
     public override void HitInitialize()
     {
+        outline.enabled = true;
         Debug.Log("HitInitialize");
-        meshRenderer.material = HitColor;
     }
 
     public override void HitUpdate()
@@ -26,12 +25,13 @@ public class OpenExamine : ExamineBase
 
     public override void HitExit()
     {
+        outline.enabled = false;
         Debug.Log("HitExit");
-        meshRenderer.material = defaultColor;
     }
 
     public override void MainProcess()
     {
-        Debug.Log("MainProcess");
+        Destroy(Instantiate(mainProcessObject, transform.position, Quaternion.identity), 1.0f);
+        Destroy(gameObject);
     }
 }

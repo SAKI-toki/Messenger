@@ -7,9 +7,10 @@ public class FlashLightController : MonoBehaviour
 {
     [SerializeField, Header("回転の制限")]
     RotLimit rotLimitAbs = new RotLimit();
+
     void Update()
     {
-        Rotation();
+        FlashLightRotation();
         //Stick押し込みでリセット
         if (SwitchInput.GetButtonDown(0, SwitchButton.Stick))
         {
@@ -17,7 +18,10 @@ public class FlashLightController : MonoBehaviour
         }
     }
 
-    void Rotation()
+    /// <summary>
+    /// 懐中電灯の回転
+    /// </summary>
+    void FlashLightRotation()
     {
 #if UNITY_SWITCH && !(UNITY_EDITOR)
         //コントローラーの向きと同じ方向に回転する
@@ -44,7 +48,6 @@ public class FlashLightController : MonoBehaviour
         }
         transform.localEulerAngles = eulerAngles;
     }
-
     /// <summary>
     /// Vector3ではRangeを付けれないのでSerializableなVector3クラスを実装
     /// </summary>

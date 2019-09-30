@@ -235,7 +235,7 @@ static public class SwitchInput
     static bool[,] xboxPrevButtons;
     enum XboxInput
     {
-        Up, Down, Right, Left, SR, SL, StickUp, StickDown, StickRight, StickLeft, Pause, Stick, None
+        Up, Down, Right, Left, SR, SL, StickUp, StickDown, StickRight, StickLeft, Pause, Stick, Trigger, ZTrigger, None
     }
 
     /// <summary>
@@ -271,6 +271,10 @@ static public class SwitchInput
                 return XboxInput.Pause;
             case SwitchButton.Stick:
                 return XboxInput.Stick;
+            case SwitchButton.Trigger:
+                return XboxInput.Trigger;
+            case SwitchButton.ZTrigger:
+                return XboxInput.ZTrigger;
             default:
                 return XboxInput.None;
         }
@@ -324,6 +328,13 @@ static public class SwitchInput
                 return Input.GetKey(KeyCode.Joystick1Button8 + index * AddNum) ||
                  Input.GetKey(KeyCode.Joystick1Button9 + index * AddNum) ||
                  (index == 0 && Input.GetKey(KeyCode.Space));
+            case XboxInput.Trigger:
+                return Input.GetKey(KeyCode.JoystickButton4 + index * AddNum) ||
+                Input.GetKey(KeyCode.Joystick1Button5 + index * AddNum) ||
+                (index == 0 && Input.GetKey(KeyCode.T));
+            case XboxInput.ZTrigger:
+                return Mathf.Abs(Input.GetAxisRaw("Ztrigger" + (index + 1).ToString())) > DeadZone ||
+                (index == 0 && Input.GetKey(KeyCode.Z));
             default:
                 return false;
         }
@@ -394,16 +405,14 @@ public enum SwitchButton : long
     Left =  NpadButton.Y| NpadButton.Left,
     SR = NpadButton.RightSR | NpadButton.LeftSR,
     SL = NpadButton.RightSL | NpadButton.LeftSL,
-    Trigger = NpadButton.R | NpadButton.L,
-    ZTrigger = NpadButton.ZR | NpadButton.ZL,
     StickUp = NpadButton.StickRUp | NpadButton.StickLUp,
     StickDown = NpadButton.StickRDown |NpadButton.StickLDown,
     StickRight = NpadButton.StickRRight | NpadButton.StickLRight,
     StickLeft = NpadButton.StickRLeft | NpadButton.StickLLeft,
     Pause = NpadButton.Plus | NpadButton.Minus,
     Stick = NpadButton.StickR | NpadButton.StickL,
-    Ok = SwitchButton.Right,
-    Cancel = SwitchButton.Down,
+    Trigger = NpadButton.R | NpadButton.L,
+    ZTrigger = NpadButton.ZR | NpadButton.ZL,
 #else
     Up = 0x1 << 0,
     Down = 0x1 << 1,
@@ -417,11 +426,9 @@ public enum SwitchButton : long
     StickLeft = 0x1 << 9,
     Pause = 0x1 << 10,
     Stick = 0x1 << 11,
-    Ok = SwitchButton.Right,
-    Cancel = SwitchButton.Down,
-    Jump = SwitchButton.Down,
-    Bomb = SwitchButton.Left,
-    Horn = SwitchButton.Down,
+    Trigger = 0x1 << 12,
+    ZTrigger = 0x1 << 13,
 #endif
+    Examine = SwitchButton.ZTrigger,
     None = 0
 }
