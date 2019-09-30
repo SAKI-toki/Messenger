@@ -1,6 +1,4 @@
-﻿//#define AUTO_EXECUTE_DEBUG
-
-using UnityEngine;
+﻿using UnityEngine;
 #if UNITY_SWITCH  && !(UNITY_EDITOR)
 using nn.hid;
 #endif
@@ -138,10 +136,6 @@ static public class SwitchInput
     /// <returns>押したならtrueを返す</returns>
     static public bool GetButtonDown(int index, SwitchButton button)
     {
-#if AUTO_EXECUTE_DEBUG
-        if (index == 0 && button == SwitchButton.Ok) return true;
-        if (index == 0 && button == SwitchButton.StickRight) return true;
-#endif
         //未接続ならfalse
         if (!SwitchManager.GetInstance().IsConnect(index)) return false;
         return !IsPrevButton(index, button) && IsCurrentButton(index, button);
@@ -180,9 +174,6 @@ static public class SwitchInput
     /// <returns>スティックの垂直</returns>
     static public float GetHorizontal(int index)
     {
-#if AUTO_EXECUTE_DEBUG
-        if (index == 0) return -1.0f;
-#endif
         //未接続なら0.0f
         if (!SwitchManager.GetInstance().IsConnect(index)) return 0.0f;
 #if UNITY_SWITCH && !(UNITY_EDITOR)
@@ -244,7 +235,7 @@ static public class SwitchInput
     static bool[,] xboxPrevButtons;
     enum XboxInput
     {
-        Up, Down, Right, Left, SR, SL, StickUp, StickDown, StickRight, StickLeft, Pause, None
+        Up, Down, Right, Left, SR, SL, StickUp, StickDown, StickRight, StickLeft, Pause, Stick, None
     }
 
     /// <summary>
@@ -278,6 +269,8 @@ static public class SwitchInput
                 return XboxInput.StickLeft;
             case SwitchButton.Pause:
                 return XboxInput.Pause;
+            case SwitchButton.Stick:
+                return XboxInput.Stick;
             default:
                 return XboxInput.None;
         }
@@ -327,6 +320,10 @@ static public class SwitchInput
             case XboxInput.Pause:
                 return Input.GetKey(KeyCode.Joystick1Button7 + index * AddNum) ||
                 (index == 0 && Input.GetKey(KeyCode.Alpha1));
+            case XboxInput.Stick:
+                return Input.GetKey(KeyCode.Joystick1Button8 + index * AddNum) ||
+                 Input.GetKey(KeyCode.Joystick1Button9 + index * AddNum) ||
+                 (index == 0 && Input.GetKey(KeyCode.Space));
             default:
                 return false;
         }
@@ -383,7 +380,6 @@ static public class SwitchInput
         }
         return 0;
     }
-
 #endif
 }
 /// <summary>
@@ -405,26 +401,27 @@ public enum SwitchButton : long
     StickRight = NpadButton.StickRRight | NpadButton.StickLRight,
     StickLeft = NpadButton.StickRLeft | NpadButton.StickLLeft,
     Pause = NpadButton.Plus | NpadButton.Minus,
+    Stick = NpadButton.StickR | NpadButton.StickL,
     Ok = SwitchButton.Right,
     Cancel = SwitchButton.Down,
-    None = 0
 #else
-    Up = 0x0001,
-    Down = 0x0002,
-    Right = 0x0004,
-    Left = 0x0008,
-    SR = 0x0010,
-    SL = 0x0020,
-    StickUp = 0x0040,
-    StickDown = 0x0080,
-    StickRight = 0x0100,
-    StickLeft = 0x0200,
-    Pause = 0x0400,
+    Up = 0x1 << 0,
+    Down = 0x1 << 1,
+    Right = 0x1 << 2,
+    Left = 0x1 << 3,
+    SR = 0x1 << 4,
+    SL = 0x1 << 5,
+    StickUp = 0x1 << 6,
+    StickDown = 0x1 << 7,
+    StickRight = 0x1 << 8,
+    StickLeft = 0x1 << 9,
+    Pause = 0x1 << 10,
+    Stick = 0x1 << 11,
     Ok = SwitchButton.Right,
     Cancel = SwitchButton.Down,
     Jump = SwitchButton.Down,
     Bomb = SwitchButton.Left,
     Horn = SwitchButton.Down,
-    None = 0x0000
 #endif
+    None = 0
 }
