@@ -5,8 +5,8 @@
 /// </summary>
 public class FlashLightController : MonoBehaviour
 {
-    [SerializeField, Header("回転の制限(絶対値)")]
-    RotLimitVector3 rotLimitAbs = new RotLimitVector3();
+    [SerializeField, Header("回転の制限")]
+    RotLimit rotLimitAbs = new RotLimit();
     void Update()
     {
         Rotation();
@@ -19,26 +19,28 @@ public class FlashLightController : MonoBehaviour
 
     void Rotation()
     {
+#if UNITY_SWITCH && !(UNITY_EDITOR)
         //コントローラーの向きと同じ方向に回転する
         transform.localRotation = SwitchGyro.GetGyro(0);
+#endif
         var eulerAngles = transform.localEulerAngles;
         //X軸回転の制限
-        if (eulerAngles.x > rotLimitAbs.x &&
-        eulerAngles.x < 360 - rotLimitAbs.x)
+        if (eulerAngles.x > rotLimitAbs.down &&
+        eulerAngles.x < 360 - rotLimitAbs.up)
         {
-            eulerAngles.x = (eulerAngles.x < 180 ? 1 : -1) * rotLimitAbs.x;
+            eulerAngles.x = (eulerAngles.x < 180 ? rotLimitAbs.down : -rotLimitAbs.up);
         }
         //Y軸回転の制限
-        if (eulerAngles.y > rotLimitAbs.y &&
-        eulerAngles.y < 360 - rotLimitAbs.y)
+        if (eulerAngles.y > rotLimitAbs.right &&
+        eulerAngles.y < 360 - rotLimitAbs.left)
         {
-            eulerAngles.y = (eulerAngles.y < 180 ? 1 : -1) * rotLimitAbs.y;
+            eulerAngles.y = (eulerAngles.y < 180 ? rotLimitAbs.right : -rotLimitAbs.left);
         }
         //Z軸回転の制限
-        if (eulerAngles.z > rotLimitAbs.z &&
-        eulerAngles.z < 360 - rotLimitAbs.z)
+        if (eulerAngles.z > rotLimitAbs.counterclockwise &&
+        eulerAngles.z < 360 - rotLimitAbs.clockwise)
         {
-            eulerAngles.z = (eulerAngles.z < 180 ? 1 : -1) * rotLimitAbs.z;
+            eulerAngles.z = (eulerAngles.z < 180 ? rotLimitAbs.counterclockwise : -rotLimitAbs.clockwise);
         }
         transform.localEulerAngles = eulerAngles;
     }
@@ -47,9 +49,19 @@ public class FlashLightController : MonoBehaviour
     /// Vector3ではRangeを付けれないのでSerializableなVector3クラスを実装
     /// </summary>
     [System.Serializable]
-    struct RotLimitVector3
+    struct RotLimit
     {
-        [SerializeField, Range(0, 180)]
-        public float x, y, z;
+        [SerializeField, Range(0, 180), Header("右回転(Y軸)")]
+        public float right;
+        [SerializeField, Range(0, 180), Header("左回転(Y軸)")]
+        public float left;
+        [SerializeField, Range(0, 180), Header("上回転(X軸)")]
+        public float up;
+        [SerializeField, Range(0, 180), Header("下回転(X軸)")]
+        public float down;
+        [SerializeField, Range(0, 180), Header("時計回り回転(Z軸)")]
+        public float clockwise;
+        [SerializeField, Range(0, 180), Header("反時計回り回転(Z軸)")]
+        public float counterclockwise;
     }
 }

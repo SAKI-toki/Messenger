@@ -630,7 +630,7 @@ MonoBehaviour:
   m_ShadowmapMode: 0
   m_Cameras:
   - {fileID: 1276541798}
-  m_CurrentCamera: {fileID: 0}
+  m_CurrentCamera: {fileID: 1276541798}
   m_Size: {x: 10, y: 10, z: 20}
   m_SpotNear: 0.05
   m_SpotFar: 1
@@ -810,7 +810,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4481237acca6fed46b9e3b8636e9c887, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotLimitAbs: {x: 30, y: 30, z: 30}
+  rotLimitAbs:
+    right: 45
+    left: 40
+    up: 25
+    down: 25
+    clockwise: 45
+    counterclockwise: 45
 --- !u!4 &995207888
 Transform:
   m_ObjectHideFlags: 0
