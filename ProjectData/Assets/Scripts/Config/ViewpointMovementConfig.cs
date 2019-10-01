@@ -1,12 +1,5 @@
 ﻿using UnityEngine;
 
-public enum VM : int
-{
-    GXSY = 0x0,
-    GXGY = 0x1,
-    None = 0x2
-};
-
 /// <summary>
 /// 視点移動の設定を保持しているクラス
 /// </summary>
@@ -15,6 +8,13 @@ public class ViewpointMovementConfig : Singleton<ViewpointMovementConfig>
     IViewpointMovement vmInterface;
     [SerializeField, Header("回転速度")]
     float rotationSpeed = 0.0f;
+
+    public enum VM : long
+    {
+        GyroXStickY = 0x0,
+        GyroXGyroY = 0x1,
+        None = 0x2
+    };
 
     void Start()
     {
@@ -44,10 +44,10 @@ public class ViewpointMovementConfig : Singleton<ViewpointMovementConfig>
     {
         switch (vm)
         {
-            case VM.GXSY:
+            case VM.GyroXStickY:
                 vmInterface = new GyroXStickY();
                 break;
-            case VM.GXGY:
+            case VM.GyroXGyroY:
                 vmInterface = new GyroXGyroY();
                 break;
 

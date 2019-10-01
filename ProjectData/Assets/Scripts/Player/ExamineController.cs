@@ -1,5 +1,8 @@
 ﻿using UnityEngine;
 
+/// <summary>
+/// 調べる行動の制御
+/// </summary>
 public class ExamineController : MonoBehaviour
 {
     [SerializeField, Header("調べる行動が届く範囲")]
@@ -21,26 +24,19 @@ public class ExamineController : MonoBehaviour
         ExamineBase prevHitExamine = rayHitExamine;
         //現在ヒットしているExamineを取得
         var currentHitExamine = GetExamineWithRay();
-        //ヒットしているExamineが同じならUpdate
-        if (prevHitExamine == currentHitExamine)
+        //違うオブジェクトにヒットしたらヒットしていたオブジェクトをExit,
+        //現在ヒットしているオブジェクトをEnterを実行
+        if (prevHitExamine != currentHitExamine)
         {
-            if (currentHitExamine) currentHitExamine.HitUpdate();
+            if (prevHitExamine) prevHitExamine.HitExit();
+            if (currentHitExamine) currentHitExamine.HitEnter();
         }
-        //ヒットしているExamineが違うならexitとinitialize
-        else if (prevHitExamine != currentHitExamine)
-        {
-            if (prevHitExamine)
-            {
-                prevHitExamine.HitExit();
-            }
-            if (currentHitExamine)
-            {
-                currentHitExamine.HitInitialize();
-            }
-        }
+        //Stayは常に実行
+        if (currentHitExamine) currentHitExamine.HitStay();
+        //Examineを押したらExamineを実行
         if (SwitchInput.GetButtonDown(0, SwitchButton.Examine))
         {
-            currentHitExamine.MainProcess();
+            if (currentHitExamine) currentHitExamine.Examine();
         }
         rayHitExamine = currentHitExamine;
     }
