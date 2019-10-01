@@ -21,8 +21,9 @@ static public class WordList
     /// <summary>
     /// 単語の数を取得
     /// </summary>
-    static int GetWordNum()
+    static public int GetWordCount()
     {
+        LoadWord();
         return wordList.Count;
     }
 
