@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 
 /// <summary>
 /// 調べる行動の制御
@@ -7,6 +8,8 @@ public class ExamineController : MonoBehaviour
 {
     [SerializeField, Header("調べる行動が届く範囲")]
     float examineDistance = 0.0f;
+    [SerializeField, Header("調べるアイコン")]
+    Image examineUI = null;
     //レイを飛ばすTransform
     Transform rayTransform = null;
     //レイが飛ばす球体の大きさ
@@ -39,6 +42,18 @@ public class ExamineController : MonoBehaviour
             if (currentHitExamine) currentHitExamine.Examine();
         }
         rayHitExamine = currentHitExamine;
+        //UIの表示・非表示
+        examineUI.enabled = rayHitExamine;
+    }
+
+    void LateUpdate()
+    {
+        if (rayHitExamine)
+        {
+            //位置をオブジェクトに合わせる
+            examineUI.rectTransform.position =
+                RectTransformUtility.WorldToScreenPoint(Camera.main, rayHitExamine.transform.position);
+        }
     }
 
     /// <summary>

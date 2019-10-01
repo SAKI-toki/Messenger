@@ -9,7 +9,7 @@ using UnityEngine.SceneManagement;
 public class FirstSceneTransition : MonoBehaviour
 {
     const string TitleSceneName = "TitleScene";
-    const float WaitTime = 2.0f;
+    const float WaitTime = 3.0f;
     void Start()
     {
         StartCoroutine(LoadStartScene());
