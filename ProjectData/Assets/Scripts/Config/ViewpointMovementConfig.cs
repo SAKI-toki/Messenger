@@ -1,16 +1,17 @@
-using UnityEngine;
+﻿using UnityEngine;
+
+public enum VM : int
+{
+    GXSY = 0x0,
+    GXGY = 0x1,
+    None = 0x2
+};
 
 /// <summary>
 /// 視点移動の設定を保持しているクラス
 /// </summary>
 public class ViewpointMovementConfig : Singleton<ViewpointMovementConfig>
 {
-    public enum VM : long
-    {
-        GyroXStickY = 0,
-        GyroXGyroY = 1,
-        None = 2
-    };
     IViewpointMovement vmInterface;
     [SerializeField, Header("回転速度")]
     float rotationSpeed = 0.0f;
@@ -43,10 +44,10 @@ public class ViewpointMovementConfig : Singleton<ViewpointMovementConfig>
     {
         switch (vm)
         {
-            case VM.GyroXStickY:
+            case VM.GXSY:
                 vmInterface = new GyroXStickY();
                 break;
-            case VM.GyroXGyroY:
+            case VM.GXGY:
                 vmInterface = new GyroXGyroY();
                 break;
 
@@ -65,7 +66,7 @@ public interface IViewpointMovement
 /// <summary>
 /// ジャイロでX軸の視点移動をし、スティックでY軸の視点移動をする
 /// </summary>
-class GyroXStickY : IViewpointMovement
+public class GyroXStickY : IViewpointMovement
 {
     public void ViewpointMovementImpl(Transform cameraTransform, Transform playerTransform, Transform flashLightTransform)
     {
@@ -77,7 +78,7 @@ class GyroXStickY : IViewpointMovement
 /// <summary>
 /// ジャイロでX軸の視点移動をし、ジャイロでY軸の視点移動をする
 /// </summary>
-class GyroXGyroY : IViewpointMovement
+public class GyroXGyroY : IViewpointMovement
 {
     public void ViewpointMovementImpl(Transform cameraTransform, Transform playerTransform, Transform flashLightTransform)
     {
@@ -90,7 +91,7 @@ class GyroXGyroY : IViewpointMovement
 /// <summary>
 /// 視点移動の実装部
 /// </summary>
-static class ViewpointMovementImplement
+static public class ViewpointMovementImplement
 {
     static Quaternion q, camRotation, playerRotation;
     static float rotateStick;

@@ -1,8 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class OpenExamine : ExamineBase
+/// <summary>
+/// Debug用の調べるクラス
+/// </summary>
+public class DebugExamine : ExamineBase
 {
     [SerializeField]
     GameObject mainProcessObject = null;
@@ -15,18 +16,15 @@ public class OpenExamine : ExamineBase
     public override void HitInitialize()
     {
         outline.enabled = true;
-        Debug.Log("HitInitialize");
     }
 
     public override void HitUpdate()
     {
-        Debug.Log("HitUpdate");
     }
 
     public override void HitExit()
     {
         outline.enabled = false;
-        Debug.Log("HitExit");
     }
 
     public override void MainProcess()

@@ -1,4 +1,4 @@
-#if UNITY_SWITCH  && !(UNITY_EDITOR)
+﻿#if UNITY_SWITCH  && !(UNITY_EDITOR)
 using nn.hid;
 #endif
 
