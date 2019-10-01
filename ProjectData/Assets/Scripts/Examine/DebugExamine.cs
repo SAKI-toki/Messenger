@@ -1,4 +1,5 @@
-﻿/// <summary>
+﻿using UnityEngine;
+/// <summary>
 /// Debug用の調べるクラス
 /// </summary>
 public class DebugExamine : ExamineBase
