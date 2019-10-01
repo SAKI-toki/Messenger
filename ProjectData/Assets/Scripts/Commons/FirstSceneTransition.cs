@@ -4,12 +4,12 @@ using UnityEngine.SceneManagement;
 
 /// <summary>
 /// switchではUnityのロゴが出ているときもシーンが進行してしまうので
-/// 最初のシーンで1秒待機する
+/// 最初のシーンで待機する
 /// </summary>
 public class FirstSceneTransition : MonoBehaviour
 {
     const string TitleSceneName = "TitleScene";
-    const float WaitTime = 1.0f;
+    const float WaitTime = 2.0f;
     void Start()
     {
         StartCoroutine(LoadStartScene());
@@ -20,7 +20,9 @@ public class FirstSceneTransition : MonoBehaviour
     /// </summary>
     IEnumerator LoadStartScene()
     {
+        AsyncOperation async = SceneManager.LoadSceneAsync(TitleSceneName);
+        async.allowSceneActivation = false;
         yield return new WaitForSeconds(WaitTime);
-        SceneManager.LoadScene(TitleSceneName);
+        async.allowSceneActivation = true;
     }
 }
